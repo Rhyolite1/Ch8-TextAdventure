@@ -20,7 +20,9 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
-
+    private HashMap<String, Item> items;        // stores items of this room.
+    private HashMap<String, Monster> monsters; // stores monsters of this room.
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -31,6 +33,8 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        items = new HashMap<String, Item>();
+        monsters = new HashMap<String, Monster>();
     }
 
     /**
@@ -60,7 +64,8 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getItemString() + "\n" +
+        getMonsterString() + "\n" + getExitString();
     }
 
     /**
@@ -88,5 +93,67 @@ public class Room
     {
         return exits.get(direction);
     }
+    
+    /**
+     * Places a new item in the game and 
+     * makes a call to the getDescription() method.
+     */
+    public void placeItem(Item newItem)
+    {
+        items.put(newItem.getDescription(), newItem);
+    }
+    
+   /**
+    * If the size of an item is greater than zero, return a string
+    * of items. 
+    * @return the string of an item.
+    */ 
+   private String getItemString()
+   {
+        String returnString = "There are no items to be found in this room";
+        
+        if (items.size() > 0)
+        {
+            returnString = "Items:";
+            Set<String> keys = items.keySet();
+            for (String item : keys)
+            {
+                returnString += item;
+                //" <" +  + ">"
+            }
+        }
+        return returnString;
+   }
+   
+   /**
+     * Places a new monster in the game and 
+     * makes a call to the  method.
+     */
+    public void placeMonster(Monster newMonster)
+    {
+       monsters.put(newMonster.getDescription(), newMonster);
+    }
+    
+   /**
+    * If the size of a monster is greater than zero, return a string
+    * of monsters. 
+    * @return the string of a monster.
+    */
+   private String getMonsterString()
+   {
+        String returnString = "There are no monsters in this room";
+        
+        if (monsters.size() > 0)
+        {
+            returnString = "Monsters:";
+            Set<String> keys = monsters.keySet();
+            for (String monster : keys)
+            {
+                returnString += monster;
+                // " <" +  + ">"
+            }
+        }
+        return returnString;
+   }
 }
 
